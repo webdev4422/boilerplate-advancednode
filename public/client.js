@@ -3,7 +3,10 @@ $(document).ready(function () {
   let socket = io();
   
   socket.on('user count', function(data) {
-    console.log(data);
+    console.log(data); 
+  });
+  socket.on('disconnect', () => {
+    console.log('user disconnected'); 
   });
   
   // Form submittion with new message in field with id 'm'
