@@ -1,7 +1,7 @@
 const passport = require('passport')
 const bcrypt = require('bcrypt')
 
-module.exports = function (app, myDataBase) {
+module.exports = function(app, myDataBase) {
   app.route('/').get((req, res) => {
     console.log('Connected to Database')
     res.render('index', {
@@ -9,10 +9,17 @@ module.exports = function (app, myDataBase) {
       message: 'Please log in',
       showLogin: true,
       showRegistration: true,
+      showSocialAuth: true
     })
   })
 
-  app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
+
+  app.route('/auth/github').get(passport.authenticate('github'), (req, res) => {
+    console.log(`/auth/github`)
+  })
+
+  app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
+    console.log(`/auth/github/callback`)
     res.redirect('/profile')
   })
 
