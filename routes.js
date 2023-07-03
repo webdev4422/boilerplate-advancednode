@@ -13,14 +13,19 @@ module.exports = function(app, myDataBase) {
     })
   })
 
+  app.route('/chat').get(ensureAuthenticated, (req, res) => {
+    res.render('chat', { user: req.user })
+  })
 
   app.route('/auth/github').get(passport.authenticate('github'), (req, res) => {
     console.log(`/auth/github`)
   })
 
   app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
+    req.session.user_id = req.user.id
     console.log(`/auth/github/callback`)
-    res.redirect('/profile')
+    // res.redirect('/profile')
+    res.redirect('/chat')
   })
 
   function ensureAuthenticated(req, res, next) {
